@@ -34,7 +34,7 @@ Container is available on the [Neurocontainers openrecon](https://github.com/neu
 - **Send Originals (boolean):** When Send Originals is True the 2 magnitude and phase difference images are sent back unmodified.
   - **Default:** True
 
-- **Gaussian Smoothing (boolean):** Performs a gaussian smoothing of the B0map with a std==1. Smoothing is performed using ``scipy.ndimage.gaussian_filter()` `
+- **Gaussian Smoothing (boolean):** Performs a gaussian smoothing of the B0map with a std==1. Smoothing is performed using `scipy.ndimage.gaussian_filter()`
 
 - **TE1/TE2 (str):** These two are optional and serve as a manual backup in case the echo times of the Mag 1 and Mag 2 images cannot be found. TE1 and TE2 are in units of milliseconds and they must be entered in as "3.06" not "3,06". It is recommended to input these values if they are easily accessible in the Program Card.
     - **TE1 Default:** "10.00"
