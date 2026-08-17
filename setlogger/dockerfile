@@ -1,0 +1,9 @@
+FROM kspacekelvin/fire-python
+
+ENV NVIDIA_VISIBLE_DEVICES=all \
+    NVIDIA_DRIVER_CAPABILITIES=compute,utility
+
+COPY SetLog.py /opt/code/python-ismrmrd-server/sortdata.py
+COPY setlogger.py /opt/code/python-ismrmrd-server/sortdata.py
+
+CMD [ "/bin/bash", "-c", "/usr/sbin/ldconfig && exec python3 /opt/code/python-ismrmrd-server/main.py -v -H=0.0.0.0 -p=9002 -l=/tmp/python-ismrmrd-server.log --defaultConfig=setlogger" ]
