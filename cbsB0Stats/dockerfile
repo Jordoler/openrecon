@@ -1,0 +1,41 @@
+FROM kspacekelvin/fire-python:latest
+
+LABEL org.opencontainers.image.description="Custom Python MRD Server with BET2"
+LABEL org.opencontainers.image.url="https://github.com/Jordoler/openrecon"
+LABEL org.opencontainers.image.authors="Jordan Grey (grey@cbs.mpg.de)"
+
+# 1. Install additional system build dependencies
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    gcc \
+    python3-dev \
+    pkg-config \
+    libhdf5-dev \
+    gcc-aarch64-linux-gnu \
+    cmake \
+    make \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# 2. Install extra Python packages
+RUN pip3 install --no-cache-dir nibabel pynetdicom scipy scikit-image
+
+# 3. Clone, build, and install BET2
+RUN cd /opt/code && \
+    git clone https://github.com/Bostrix/FSL-BET2 && \
+    cd FSL-BET2 && \
+    mkdir build && \
+    cd build && \
+    cmake .. && \
+    make
+
+ENV PATH="${PATH}:/opt/code/FSL-BET2/bin"
+
+# 4. Copy local server code
+COPY b0map.py /opt/code/python-ismrmrd-server
+
+RUN find /opt/code/python-ismrmrd-server -name "*.sh" | xargs dos2unix && \
+    find /opt/code/python-ismrmrd-server -name "*.sh" -exec chmod +x {} \;
+
+WORKDIR /opt/code/python-ismrmrd-server
+
+CMD [ "python3", "/opt/code/python-ismrmrd-server/main.py", "-v", "-H=0.0.0.0", "-p=9002", "-l=/tmp/python-ismrmrd-server.log", "--defaultConfig=b0map"]
