@@ -1,0 +1,73 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "CBS OpenRecon",
+    "section": "",
+    "text": "Open Recon is an interface software for open development of applications and algorithms that integrate within the reconstruction pipeline of Siemens XA60 scanners and above.\nThis site serves as a public repository for my Open Recon containers and related Software.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#additionaluseful-resources",
+    "href": "index.html#additionaluseful-resources",
+    "title": "CBS OpenRecon",
+    "section": "Additional/Useful Resources",
+    "text": "Additional/Useful Resources\n\nNeurodesk OpenRecon Getting Started Guide\nOpen Recon - How it works Siemens Healthineers presentation\nISMRMRD data format documentation\nPython ISMRMRD Server Repo",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "Containers/setlogger.html",
+    "href": "Containers/setlogger.html",
+    "title": "Set Logger",
+    "section": "",
+    "text": "A simple container that collects the key-value pairs of the mrdHeader, metadata and ice header of each item, and reports the count of each value for each key appended to the end of the logs. This container makes no changes or alterations to the image data, metadata or header.\nContainer currently works with image-to-image and in available in Neurocontainers as such.\nThe SetLog module does have work in progress acquisition logging for raw-to-complex-image however this is still a WIP, to use it in a container the container must first be configured to a raw-2-complex image container.\n\nSource code is available on my Github",
+    "crumbs": [
+      "Containers",
+      "Set Logger"
+    ]
+  },
+  {
+    "objectID": "Containers/setlogger.html#setlog-module",
+    "href": "Containers/setlogger.html#setlog-module",
+    "title": "Set Logger",
+    "section": "SetLog Module",
+    "text": "SetLog Module\nWhen using the Set Log module in your own projects here are a couple tips for easy implementation.\nWrite Tips",
+    "crumbs": [
+      "Containers",
+      "Set Logger"
+    ]
+  },
+  {
+    "objectID": "Containers/MCPC.html",
+    "href": "Containers/MCPC.html",
+    "title": "MCPC-3D-S combination",
+    "section": "",
+    "text": "Overview\nAn image-to-image container that performs the MCPC-3D-S algorithm [1] with n-echo times and m-channels. Designed for immediate combination of images for later QSM analysis.\n\nSource code is available on my Github\nWARNING: This container suffers from long processing times, sequences with large total slice counts &gt;50,000 have processing times over 30min. This is primarily a limitation on the scanner throughout of images and not strictly the container.\n\n\nParameters\n\nConfig (choice):\n\nMCPC-3D-S Standard: The MCPC-3D-S Algorithm via Julia, source code can be found at [2]\nMCPC-3D-S Memory Efficent: Recommended for larger scans\nMCPC Logger: A dedicated logging for debugging\n\n2pi Phase Scale (bool): scales images to [-2pi,2pi] if False images are scaled to [-pi,pi]\nreplaceGRAPPA (bool): Replaces GRAPPA Images with MCPC-3D-S Images, leave false to recieved both GRAPPA and MCPC-3D-S images.\nPerformance Timer (bool): Times each major step by the container.\nSendOriginal (bool): Output uncombined images.\n\n\n\nReferences\n[1] Eckstein, K., Dymerska, B., Bachrata, B., Bogner, W., Poljanc, K., Trattnig, S., & Robinson, S. D. (2018). Computationally Efficient Combination of Multi-channel Phase Data From Multi-echo Acquisitions (ASPIRE). Magnetic resonance in medicine, 79(6), 2996–3006. https://doi.org/10.1002/mrm.26963\n[2] https://github.com/korbinian90/ASPIRE (do properly)",
+    "crumbs": [
+      "Containers",
+      "MCPC-3D-S combination"
+    ]
+  },
+  {
+    "objectID": "Containers/b0map.html",
+    "href": "Containers/b0map.html",
+    "title": "CBS B0map Stats",
+    "section": "",
+    "text": "Overview\nAn image-to-image container that inputs a magnitude and two phase images and creates a B0map.\nThe container is available on the Neurocontainers Builder Site, or on the Neurodesk OpenRecon repository Github.\nSource code is available on my Github\n\n\nConfig Parameters\n\nConfig (choice): There is no choice here the only option is the B0map script\nNumber of Dilations (int): the number of dilations performed on the Brain Mask. Dilations are performed using scipy.ndimage.binary_dilation() NOTE: Dilations happen before Erosions\n\nMin: 0\nMax: 100\nDefault: 2\n\nNumber of Erosions (int): the number of erosions performed on the Brain Mask. Erosions are performed using scipy.ndimage.binary_erosion() NOTE: Dilations happen before Erosions\n\nMin: 0\nMax: 100\nDefault: 3\n\nFractional Intensity (double): The fractional threshold of the BET2 brain mask, smaller values give larger brain outline estimates\n\nMin: 0.0\nMax: 1.0\nDefault: 0.4\n\nSend Originals (boolean): When Send Originals is True the 2 magnitude and phase difference images are sent back unmodified.\n\nDefault: True\n\nGaussian Smoothing (boolean): Performs a gaussian smoothing of the B0map with a std==1. Smoothing is performed using scipy.ndimage.gaussian_filter()\nTE1/TE2 (str): These two are optional and serve as a manual backup in case the echo times of the Mag 1 and Mag 2 images cannot be found. TE1 and TE2 are in units of milliseconds and they must be entered in as “3.06” not “3,06”. It is recommended to input these values if they are easily accessible in the Program Card.\n\nTE1 Default: “10.00”\nTE2 Default: “12.00”\nDelta TE Default: “2.00”\n\n\nNOTE: These are entered as string variables if they do not follow a float convention they will be disregarded.\n\nVerbose Logging (boolean): Enables extra logging of data arrays and the B0map process steps.\n\nDefault: False",
+    "crumbs": [
+      "Containers",
+      "CBS B0map Stats"
+    ]
+  },
+  {
+    "objectID": "Software/orlaunch.html",
+    "href": "Software/orlaunch.html",
+    "title": "🚀 ORLaunch",
+    "section": "",
+    "text": "WIP\n\n\n\n\n\n\n\nOverview\nOrlaunch is designed to streamline the process of creating new OpenRecon containers and the development process. Fundamentally its a customisable project-generator that populates a project directory based on a JSON template layout and template files. Additionally ORlaunch has some scripts to help with compiling your application in a container.\nBy default ORlaunch contains boilerplate code for python-based development however you can freely customise which boilerplate you use, via the template_map.json file (more info below).\nOrlaunch is available on github\n\n\nFeatures\n\nCustomisable project-folder scaffold via JSON files\nBoilerplate code to kick-start container development.\n\n\n\nHow to use ORlaunch\n\nCreating a new project\nTo create a new project, run:\npython orlaunch new --project-name myproject --project-dir .\nThis creates a new project folder named myproject in your current directory and populates it with the following structure:\nAPP_NAME/\n|\n|-- App Code/\n|   |-- APP_NAME.py\n|   |-- ORUtils/\n|   |   |-- Logger.py\n|   |   |-- ...\n|-- Utilities/\n|   |-- Checks/\n|   |   |-- CheckDockerVerison.py\n|   |   |-- OpenReconSchema_1.1.0.json\n|-- Dockerfile\n|-- APP_NAME_Label.json\n|-- APP_NAME_Documentation.md\n|-- CreateContainer.py\n|-- Containers/"
+  }
+]
